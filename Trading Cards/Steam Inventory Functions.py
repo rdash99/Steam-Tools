@@ -16,15 +16,23 @@ def findDupes(id):
     with open("{}.json".format(str(id)), "r") as f:
         data = json.loads(f.read())
     f.close()
-    items = data["descriptions"]
+
+    with open("{}.json".format(str(id)), "r") as f:
+        descriptions = json.loads(f.read())
+    f.close()
+
+    descriptions = descriptions["descriptions"]
+
+    items = data["assets"]
     found = []
     dupes = []
     for i in items:
-        if i["market_hash_name"] in found:
+        if i["classid"] in found:
             dupes.append(i)
             print(str(len(dupes)) + " found")
         else:
-            found.append(i["market_hash_name"])
+            found.append(i["classid"])
+    print(data["total_inventory_count"] - len(found))
 
     with open("{}_dupes.json".format(str(id)), "w") as f:
         f.write(json.dumps(dupes))
@@ -37,13 +45,21 @@ def checkSellable(id):
         items = json.loads(f.read())
     f.close()
 
+    with open("{}.json".format(str(id)), "r") as f:
+        descriptions = json.loads(f.read())
+    f.close()
+
+    descriptions = descriptions["descriptions"]
+
     sellable = []
     unsellable = []
     for i in items:
-        if i["marketable"] == 1:
-            sellable.append(i)
-        else:
-            unsellable.append(i)
+        for j in descriptions:
+            if j["instanceid"] != "0" and j["classid"] == i["classid"]:
+                if j["marketable"] == 1:
+                    sellable.append(j)
+                else:
+                    unsellable.append(j)
 
     with open("{}_sellabledupes.json".format(str(id)), "w") as f:
         f.write(json.dumps(sellable))
