@@ -81,7 +81,29 @@ def checkSellable(id):
     f.close()
 
 
+def getGemValue(appID, itemType):
+    url = "http://steamcommunity.com/auction/ajaxgetgoovalueforitemtype/?appid={}&item_type={}".format(
+        appID, itemType)
+    data = r.get(url)
+    response = data.json()
+    gem_value = response["goo_value"]
+    return gem_value
+
+
+def getItemValue(appID, market_hash_name):
+    url = "http://steamcommunity.com/market/priceoverview/?appid={}&currency=2&market_hash_name={}".format(
+        appID, market_hash_name)
+    data = r.get(url)
+    response = data.json()
+    itemValue = response["lowest_price"]
+    return itemValue
+
+
 getInventory(76561198261714500)
 
 
 findDupes(76561198261714500)
+
+# code to enter required information of sessionid and steamid
+""" sessionid = input("Enter sessionid: ")
+steamid = input("Enter steamid: ") """
