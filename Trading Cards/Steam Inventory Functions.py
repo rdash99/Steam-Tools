@@ -29,7 +29,6 @@ def findDupes(id):
     for i in items:
         if i["classid"] in found:
             dupes.append(i)
-            print(str(len(dupes)) + " found")
         else:
             found.append(i["classid"])
     print(data["total_inventory_count"] - len(found))
