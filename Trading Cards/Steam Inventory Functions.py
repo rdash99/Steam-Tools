@@ -95,14 +95,36 @@ def getItemValue(appID, market_hash_name):
         appID, market_hash_name)
     data = r.get(url)
     response = data.json()
-    itemValue = response["lowest_price"]
+    itemValue = int(float(response['lowest_price'][1:]) * 100)
+    print(itemValue)
     return itemValue
+
+
+def sellItem(itemInfo, sessionid, price):
+    url = "http://steamcommunity.com/market/sellitem/"
+    params = {"appid": itemInfo["appid"], "assetid": itemInfo["assetid"],
+              "contextid": itemInfo["contextid"], "sessionid": sessionid, "price": price}
+    headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/",
+               "DNT": "1", "Origin": "https://steamcommunity.com"}
+    data = r.post(url, params=params, headers=headers)
+    response = data.json()
+    assert response.status_code == 200
+    return response
+    # https://steamcommunity.com/market/sellitem/
+    '''sessionid: 84f127b01e60b00f49ac8372
+appid: 753
+contextid: 6
+assetid: 19990898507
+amount: 1
+price: 3'''
 
 
 getInventory(76561198261714500)
 
 
 findDupes(76561198261714500)
+
+getItemValue("753", "998740-Mimic")
 
 # code to enter required information of sessionid and steamid
 """ sessionid = input("Enter sessionid: ")
