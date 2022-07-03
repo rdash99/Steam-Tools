@@ -20,17 +20,53 @@ def findDupes(id):
     found = []
     dupes = []
     for i in items:
-        if i["name"] in found:
+        if i["market_hash_name"] in found:
             dupes.append(i)
             print(str(len(dupes)) + " found")
         else:
-            found.append(i["name"])
+            found.append(i["market_hash_name"])
 
     with open("{}_dupes.json".format(str(id)), "w") as f:
         f.write(json.dumps(dupes))
     f.close()
+    checkSellable(id)
 
 
-# getInventory(76561198261714500)
+def checkSellable(id):
+    with open("{}_dupes.json".format(str(id)), "r") as f:
+        items = json.loads(f.read())
+    f.close()
 
-# findDupes(76561198261714500)
+    sellable = []
+    unsellable = []
+    for i in items:
+        if i["marketable"] == 1:
+            sellable.append(i)
+        else:
+            unsellable.append(i)
+
+    with open("{}_sellabledupes.json".format(str(id)), "w") as f:
+        f.write(json.dumps(sellable))
+    f.close()
+
+    with open("{}_sellabledupesNames.txt".format(str(id)), "w") as f:
+        for i in sellable:
+            f.write(str(i["name"]))
+            f.write("\n")
+    f.close()
+
+    with open("{}_unsellabledupesNames.txt".format(str(id)), "w") as f:
+        for i in unsellable:
+            f.write(str(i["name"]))
+            f.write("\n")
+    f.close()
+
+    with open("{}_unsellabledupes.json".format(str(id)), "w") as f:
+        f.write(json.dumps(unsellable))
+    f.close()
+
+
+getInventory(76561198261714500)
+
+
+findDupes(76561198261714500)
