@@ -10,7 +10,6 @@ def getInventory(id):
     with open("{}/{}.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(inv))
     f.close()
-    return data.cookies
 
 
 def findDupes(id):
