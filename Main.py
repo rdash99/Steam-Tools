@@ -20,7 +20,7 @@ market_jar = transfer_login(jar, auth_ctx)
 check_eligibility(market_jar)
 
 setup(id)
-market_jar.update(getInventory(id))
+getInventory(id)
 findDupes(id)
 sellAll(market_jar, auth_ctx, id)
 time.sleep(5)
