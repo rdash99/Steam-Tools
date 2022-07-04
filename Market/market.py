@@ -43,8 +43,8 @@ price: 3'''
 
 
 def check_eligibility(jar):
-    resp = requests.get(URL_CHECK_ELIGIBILITY,
-                        cookies=jar, allow_redirects=False)
+    resp = r.get(URL_CHECK_ELIGIBILITY,
+                 cookies=jar, allow_redirects=False)
     jar.update(resp.cookies)
 
     return resp.status_code == 302
