@@ -26,12 +26,12 @@ def getItemValue(appID, market_hash_name):
 
 def sellItem(jar, item, auth_ctx, price):
     url = "http://steamcommunity.com/market/sellitem/"
-    parameters = {"sessionid": jar["sessionid"], "appid": item["appid"], "contextid": item["contextid"], "assetid": item["assetid"],
-                  "amount": 1, "price": price}
-    headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/",
-               "DNT": "1"}
+    parameters = {"sessionid": jar["sessionid"], "appid": str(item["appid"]), "contextid": item["contextid"], "assetid": item["assetid"],
+                  "amount": '1', "price": str(price)}
+    headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/"}
     data = r.post(url, params=parameters, cookies=jar, headers=headers)
     response = data.json()
+    print(parameters)
     print(response)
     assert data.status_code == 200
     return response
@@ -40,7 +40,6 @@ def sellItem(jar, item, auth_ctx, price):
 def check_eligibility(jar):
     resp = r.get(URL_CHECK_ELIGIBILITY,
                  cookies=jar, allow_redirects=False)
-    jar.update(resp.cookies)
 
     return resp.status_code == 302
 
