@@ -10,7 +10,6 @@ password = input("Enter your Steam password: ")
 jar = r.cookies.RequestsCookieJar()
 
 auth_ctx = login(jar, username, password)
-print(auth_ctx)
 
 id = auth_ctx['steamid']
 
