@@ -28,7 +28,8 @@ def sellItem(jar, item, auth_ctx, price):
     url = "http://steamcommunity.com/market/sellitem/"
     parameters = {"sessionid": jar["sessionid"], "appid": str(item["appid"]), "contextid": item["contextid"], "assetid": item["assetid"],
                   "amount": '1', "price": str(price)}
-    headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/"}
+    headers = {
+        "Referer": "https://steamcommunity.com/profiles/{}/inventory/".format(auth_ctx["steamid"])}
     data = r.post(url, params=parameters, cookies=jar, headers=headers)
     response = data.json()
     print(parameters)
