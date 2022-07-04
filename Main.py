@@ -8,7 +8,6 @@ import time
 username = input("Enter your Steam username: ")
 password = input("Enter your Steam password: ")
 jar = r.cookies.RequestsCookieJar()
-
 auth_ctx = login(jar, username, password)
 
 id = auth_ctx['steamid']
@@ -21,7 +20,8 @@ market_jar = transfer_login(jar, auth_ctx)
 check_eligibility(market_jar)
 
 setup(id)
-getInventory(id)
+market_jar.update(getInventory(id))
 findDupes(id)
+sellAll(market_jar, auth_ctx, id)
 time.sleep(5)
-cleanup(id)
+# cleanup(id)
