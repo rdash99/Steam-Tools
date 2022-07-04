@@ -1,5 +1,6 @@
 import requests as r
 import json
+import time
 
 URL_CHECK_ELIGIBILITY = 'https://steamcommunity.com/market/eligibilitycheck/'
 
@@ -23,23 +24,17 @@ def getItemValue(appID, market_hash_name):
     return itemValue
 
 
-def sellItem(jar, itemInfo, sessionid, price):
+def sellItem(jar, item, auth_ctx, price):
     url = "http://steamcommunity.com/market/sellitem/"
-    params = {"appid": itemInfo["appid"], "assetid": itemInfo["assetid"],
-              "contextid": itemInfo["contextid"], "amount": "1", "sessionid": sessionid, "price": price}
+    parameters = {"sessionid": jar["sessionid"], "appid": item["appid"], "contextid": item["contextid"], "assetid": item["assetid"],
+                  "amount": 1, "price": price}
     headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/",
-               "DNT": "1", "Origin": "https://steamcommunity.com"}
-    data = r.post(url, params=params, cookies=jar, headers=headers)
+               "DNT": "1"}
+    data = r.post(url, params=parameters, cookies=jar, headers=headers)
     response = data.json()
-    assert response.status_code == 200
+    print(response)
+    assert data.status_code == 200
     return response
-    # https://steamcommunity.com/market/sellitem/
-    '''sessionid: 84f127b01e60b00f49ac8372
-appid: 753
-contextid: 6
-assetid: 19990898507
-amount: 1
-price: 3'''
 
 
 def check_eligibility(jar):
@@ -50,4 +45,14 @@ def check_eligibility(jar):
     return resp.status_code == 302
 
 
-getItemValue("753", "998740-Mimic")
+def sellAll(jar, auth_ctx, id):
+    with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "r") as f:
+        items = json.loads(f.read())
+    f.close()
+
+    for item in items:
+        price = getItemValue(item["appid"], item["market_hash_name"])
+        sellItem(jar, item, auth_ctx, price)
+        print("Sold {} for {}".format(item["name"], price))
+        time.sleep(3)
+        break
