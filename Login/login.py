@@ -1,4 +1,5 @@
 from .crypto import make_key, encrypt
+import requests
 
 URL_GET_RSA_KEY = 'https://store.steampowered.com/login/getrsakey/'
 URL_LOGIN = 'https://store.steampowered.com/login/dologin/'
@@ -49,7 +50,7 @@ def login(jar, username, password):
 
     elif data.get('emailauth_needed'):
         code = input("Enter the code you received in your email: ")
-        params['emailauth'] = code
+        params['emailauth'] = code.upper()
         params['emailsteamid'] = data['emailsteamid']
 
         resp = requests.post(URL_LOGIN, data=params, cookies=jar)
@@ -64,7 +65,7 @@ def login(jar, username, password):
     elif data.get('requires_twofactor'):
         code = input(
             "Enter the code you received from the Authenticator app: ")
-        params['twofactorcode'] = code
+        params['twofactorcode'] = code.upper()
         resp = requests.post(URL_LOGIN, data=params, cookies=jar)
         assert resp.status_code == 200, "Login failed."
 
