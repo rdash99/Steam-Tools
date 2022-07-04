@@ -23,13 +23,13 @@ def getItemValue(appID, market_hash_name):
     return itemValue
 
 
-def sellItem(itemInfo, sessionid, price):
+def sellItem(jar, itemInfo, sessionid, price):
     url = "http://steamcommunity.com/market/sellitem/"
     params = {"appid": itemInfo["appid"], "assetid": itemInfo["assetid"],
-              "contextid": itemInfo["contextid"], "sessionid": sessionid, "price": price}
+              "contextid": itemInfo["contextid"], "amount": "1", "sessionid": sessionid, "price": price}
     headers = {"Referer": "https://steamcommunity.com/id/zugglybug/inventory/",
                "DNT": "1", "Origin": "https://steamcommunity.com"}
-    data = r.post(url, params=params, headers=headers)
+    data = r.post(url, params=params, cookies=jar, headers=headers)
     response = data.json()
     assert response.status_code == 200
     return response
