@@ -1,6 +1,8 @@
 import requests as r
 import json
 
+URL_CHECK_ELIGIBILITY = 'https://steamcommunity.com/market/eligibilitycheck/'
+
 
 def getGemValue(appID, itemType):
     url = "http://steamcommunity.com/auction/ajaxgetgoovalueforitemtype/?appid={}&item_type={}".format(
@@ -38,6 +40,14 @@ contextid: 6
 assetid: 19990898507
 amount: 1
 price: 3'''
+
+
+def check_eligibility(jar):
+    resp = requests.get(URL_CHECK_ELIGIBILITY,
+                        cookies=jar, allow_redirects=False)
+    jar.update(resp.cookies)
+
+    return resp.status_code == 302
 
 
 getItemValue("753", "998740-Mimic")
