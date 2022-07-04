@@ -10,6 +10,7 @@ def getInventory(id):
     with open("{}/{}.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(inv))
     f.close()
+    return data.cookies
 
 
 def findDupes(id):
@@ -63,9 +64,9 @@ def checkSellable(id):
         for j in descriptions:
             if j["instanceid"] != "0" and j["classid"] == i["classid"]:
                 if j["marketable"] == 1:
-                    sellable.append(j)
+                    sellable.append(formatDupe(j, i))
                 else:
-                    unsellable.append(j)
+                    unsellable.append(formatDupe(j, i))
 
     with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(sellable))
@@ -88,12 +89,18 @@ def checkSellable(id):
     f.close()
 
 
-# getInventory(76561198261714500)
-
-
-# findDupes(76561198261714500)
-
-
-# code to enter required information of sessionid and steamid
-""" sessionid = input("Enter sessionid: ")
-steamid = input("Enter steamid: ") """
+def formatDupe(description, item):
+    data = {
+        "name": description["name"],
+        "classid": description["classid"],
+        "market_hash_name": description["market_hash_name"],
+        "market_fee_app": description["market_fee_app"],
+        "commodity": description["commodity"],
+        "tradable": description["tradable"],
+        "marketable": description["marketable"],
+        "appid": description["appid"],
+        "instanceid": item["instanceid"],
+        "contextid": item["contextid"],
+        "assetid": item["assetid"],
+    }
+    return data
