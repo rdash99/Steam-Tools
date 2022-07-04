@@ -19,6 +19,7 @@ resp = r.get('https://steamcommunity.com/', cookies=jar)
 jar.update(resp.cookies)
 
 market_jar = transfer_login(jar, auth_ctx)
+check_eligibility(market_jar)
 
 setup(id)
 getInventory(id)
