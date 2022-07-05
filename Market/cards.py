@@ -38,7 +38,8 @@ def findDupes(id):
             dupes.append(i)
         else:
             found.append(i["classid"])
-    print(data["total_inventory_count"] - len(found))
+    print(str(len(dupes)) + " items found")
+    print("Splitting into sellable and unsellable")
 
     with open("{}/{}_dupes.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(dupes))
@@ -66,7 +67,8 @@ def checkSellable(id):
                     sellable.append(formatDupe(j, i))
                 else:
                     unsellable.append(formatDupe(j, i))
-
+    print(str(len(sellable)) + " items found to sell")
+    print(str(len(unsellable)) + " items found to convert to gems")
     with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(sellable))
     f.close()
