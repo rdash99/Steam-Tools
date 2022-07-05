@@ -5,19 +5,27 @@ from Login.login import *
 import requests as r
 import time
 
-username = input("Enter your Steam username: ")
-password = input("Enter your Steam password: ")
-jar = r.cookies.RequestsCookieJar()
-auth_ctx = login(jar, username, password)
+decision = input("Enter 'y' to login or 'n' to skip and enter your steam id: ")
 
-id = auth_ctx['steamid']
+decision = decision.lower()
 
-# init session
-resp = r.get('https://steamcommunity.com/', cookies=jar)
-jar.update(resp.cookies)
+if decision == 'y':
+    username = input("Enter your Steam username: ")
+    password = input("Enter your Steam password: ")
+    jar = r.cookies.RequestsCookieJar()
+    auth_ctx = login(jar, username, password)
 
-market_jar = transfer_login(jar, auth_ctx)
-check_eligibility(market_jar)
+    id = auth_ctx['steamid']
+
+    # init session
+    resp = r.get('https://steamcommunity.com/', cookies=jar)
+    jar.update(resp.cookies)
+
+    market_jar = transfer_login(jar, auth_ctx)
+    check_eligibility(market_jar)
+
+else:
+    id = input("Enter your Steam id: ")
 
 setup(id)
 getInventory(id)
