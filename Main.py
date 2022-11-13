@@ -31,5 +31,5 @@ setup(id)
 getInventory(id)
 findDupes(id)
 # sellAll(market_jar, auth_ctx, id) - borked, not sure why
-time.sleep(5)
+# time.sleep(5)
 # cleanup(id)
