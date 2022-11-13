@@ -3,6 +3,7 @@ import os
 
 
 def setup(id):
+    cleanup(id)
     if os.path.exists(str(id)):
         pass
     else:
