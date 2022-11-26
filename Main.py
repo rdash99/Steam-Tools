@@ -22,14 +22,28 @@ if decision == 'y':
     jar.update(resp.cookies)
 
     market_jar = transfer_login(jar, auth_ctx)
-    check_eligibility(market_jar)
+    if check_eligibility(market_jar):
+        setup(id)
+        getInventory(id)
+        findDupes(id)
+        try:
+            multiSell(id)
+        except Exception as e:
+            print("Error selling cards: " + e)
+            pass
 
 else:
     id = input("Enter your Steam id: ")
+    setup(id)
+    getInventory(id)
+    findDupes(id)
+    try:
+        multiSell(id)
+    except Exception as e:
+        print("Error selling cards: " + e)
+        pass
+    # sellAll(market_jar, auth_ctx, id) - borked, not sure why
 
-setup(id)
-getInventory(id)
-findDupes(id)
-# sellAll(market_jar, auth_ctx, id) - borked, not sure why
+
 # time.sleep(5)
 # cleanup(id)
