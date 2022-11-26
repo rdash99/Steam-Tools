@@ -56,3 +56,26 @@ def sellAll(jar, auth_ctx, id):
         print("Sold {} for {}".format(item["name"], price))
         time.sleep(3)
         break
+    
+def multiSell(id):
+    with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "r") as f:
+        items = json.loads(f.read())
+    f.close()
+    baseUrl = "http://steamcommunity.com/market/multisell?appid=753&contextid=6"
+    
+    splitItems = split(items, 20)
+
+    urls = []
+    
+    for item in splitItems:
+        url = baseUrl
+        for i in item:
+            url += ("&items[]={}&qty[]=1".format(i["market_hash_name"].replace(' ', "%20")))
+        urls.append(url)
+    with open("{}/{}_sellableurl.txt".format(str(id), str(id)), "w") as f:
+        for url in urls:
+            f.write(url + "\n")
+    f.close()
+    
+def split(items, size):
+    return [items[i:i+size] for i in range(0, len(items), size)]
