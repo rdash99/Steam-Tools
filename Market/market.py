@@ -59,7 +59,8 @@ def sellAll(jar, auth_ctx, id):
         
 #move function to cards
 def formatItem(item):
-    return data = {'quantity': 1, "market_hash_name": item["market_hash_name"]}
+    data = {'quantity': 1, "market_hash_name": item["market_hash_name"]}
+    return data
     
 def multiSell(id):
     with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "r") as f:
@@ -74,22 +75,26 @@ def multiSell(id):
     sortedItems = []
     
     for item in splitItems:
-        list = []
+        listData = []
+        index = 0
         for i in item:
-            if i in list:
-                index = list.index(i)
-                item = list(index)
-                item['quantity'] += 1
-                list(index) = item
-            else:
-                list.append(formatItem(i))
-        sortedItems.append(list)
+            #check if item is in list already and if so, add to quantity instead of adding new item
+            try:
+                if i["market_hash_name"] in listData[index]:
+                    listData[i["market_hash_name"]]["quantity"] += 1
+                else:
+                    listData.append(formatItem(i))
+            except:
+                listData.append(formatItem(i))
+        sortedItems.append(listData)
+        print(listData)
+        index+=1
         
         
-    for item in splitItems:
+    for item in sortedItems:
         url = baseUrl
         for i in item:
-            url += ("&items[]={}&qty[]=1".format(i["market_hash_name"].replace(' ', "%20")))
+            url += ("&items[]={}&qty[]={}".format(i["market_hash_name"].replace(' ', "%20"), i["quantity"]))
         urls.append(url)
     with open("{}/{}_sellableurl.txt".format(str(id), str(id)), "w") as f:
         for url in urls:
