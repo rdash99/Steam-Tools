@@ -56,6 +56,10 @@ def sellAll(jar, auth_ctx, id):
         print("Sold {} for {}".format(item["name"], price))
         time.sleep(3)
         break
+        
+#move function to cards
+def formatItem(item):
+    return data = {'quantity': 1, "market_hash_name": item["market_hash_name"]}
     
 def multiSell(id):
     with open("{}/{}_sellabledupes.json".format(str(id), str(id)), "r") as f:
@@ -67,6 +71,21 @@ def multiSell(id):
 
     urls = []
     
+    sortedItems = []
+    
+    for item in splitItems:
+        list = []
+        for i in item:
+            if i in list:
+                index = list.index(i)
+                item = list(index)
+                item['quantity'] += 1
+                list(index) = item
+            else:
+                list.append(formatItem(i))
+        sortedItems.append(list)
+        
+        
     for item in splitItems:
         url = baseUrl
         for i in item:
