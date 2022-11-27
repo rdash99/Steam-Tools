@@ -79,16 +79,22 @@ def multiSell(id):
         index = 0
         for i in item:
             #check if item is in list already and if so, add to quantity instead of adding new item
+            i = formatItem(i)
             try:
-                if i["market_hash_name"] in listData[index]:
-                    listData[i["market_hash_name"]]["quantity"] += 1
+                for item in listData:
+                    if i["market_hash_name"] == item["market_hash_name"]:
+                        index = listData.index(item)
+                        listData[index]["quantity"] += 1
+                        updated = True
+                    if updated == True:
+                        break
+                if updated == True:
+                    pass
                 else:
-                    listData.append(formatItem(i))
+                    listData.append(i)
             except:
-                listData.append(formatItem(i))
+                listData.append(i)
         sortedItems.append(listData)
-        print(listData)
-        index+=1
         
         
     for item in sortedItems:
