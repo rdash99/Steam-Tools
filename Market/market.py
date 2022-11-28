@@ -78,6 +78,7 @@ def multiSell(id):
         listData = []
         index = 0
         for i in item:
+            updated = False
             #check if item is in list already and if so, add to quantity instead of adding new item
             i = formatItem(i)
             try:
