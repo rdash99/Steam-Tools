@@ -1,4 +1,4 @@
-from Cleanup.file import setup, cleanup
+from Cleanup.cleanup import setup, cleanup
 from Market.cards import *
 from Market.market import *
 from Login.login import *
