@@ -26,22 +26,22 @@ if decision == 'y':
         setup(id)
         getInventory(id)
         findDupes(id)
-        try:
-            multiSell(id)
-        except Exception as e:
-            print("Error selling cards: " + e)
-            pass
+        # try:
+        #     multiSell(id)
+        # except Exception as e:
+        #     print("Error selling cards: " + e)
+        #     pass
 
 else:
     id = input("Enter your Steam id: ")
     setup(id)
     getInventory(id)
     findDupes(id)
-    try:
-        multiSell(id)
-    except Exception as e:
-        print("Error selling cards: " + e)
-        pass
+    # try:
+    #     multiSell(id)
+    # except Exception as e:
+    #     print("Error selling cards: " + e)
+    #     pass
     # sellAll(market_jar, auth_ctx, id) - borked, not sure why
 
 
