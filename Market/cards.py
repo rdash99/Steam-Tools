@@ -6,10 +6,21 @@ def getInventory(id):
     url = "https://steamcommunity.com/inventory/{}/753/6?l=english&count=5000".format(
         id)
     data = r.get(url)
+    print("Inventory data received")
+    print(data)
     inv = data.json()
+    last = inv["assets"][len(inv["assets"])-1]["assetid"]
     with open("{}/{}.json".format(str(id), str(id)), "w") as f:
         f.write(json.dumps(inv))
     f.close()
+    if inv['total_inventory_count'] > 5000:
+        print("Inventory is over 5000 items, getting next page")
+        url = "https://steamcommunity.com/inventory/{}/753/6?l=english&count=5000&start_assetid={}".format(
+            id, last)
+        with open("{}/{}.json".format(str(id), str(id)), "w") as f:
+            f.append(json.dumps(inv))
+        f.close()
+        
 
 
 def findDupes(id):
